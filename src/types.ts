@@ -39,6 +39,7 @@ export interface ReactIdSwiperProps extends SwiperOptions {
     el: string;
     value: string;
   };
+  isOutRender?: boolean;
 }
 
 export interface ReactIdSwiperCustomProps extends ReactIdSwiperProps {

@@ -36,7 +36,8 @@ const ReactIdSwiper: FunctionComponent<ReactIdSwiperProps> = props => {
     scrollbar,
     shouldSwiperUpdate,
     slideClass,
-    loop
+    loop,
+    isOutRender
   } = props;
 
   // Define swiper ref
@@ -174,19 +175,34 @@ const ReactIdSwiper: FunctionComponent<ReactIdSwiperProps> = props => {
   }
 
   return (
-    <ContainerEl className={containerClass} dir={rtl && 'rtl'} ref={swiperNodeRef}>
-      {parallax && parallaxEl && renderParallax && renderParallax(props)}
-      <WrapperEl className={wrapperClass}>{Children.map(children, renderContent)}</WrapperEl>
-      {pagination && pagination.el && renderPagination && renderPagination(props)}
-      {scrollbar && scrollbar.el && renderScrollbar && renderScrollbar(props)}
-      {navigation && navigation.nextEl && renderNextButton && renderNextButton(props)}
-      {navigation && navigation.prevEl && renderPrevButton && renderPrevButton(props)}
-    </ContainerEl>
+    <>
+      <ContainerEl className={containerClass} dir={rtl && 'rtl'} ref={swiperNodeRef}>
+        {parallax && parallaxEl && renderParallax && renderParallax(props)}
+        <WrapperEl className={wrapperClass}>{Children.map(children, renderContent)}</WrapperEl>
+        {!isOutRender ? (
+          <>
+            {pagination && pagination.el && renderPagination && renderPagination(props)}
+            {scrollbar && scrollbar.el && renderScrollbar && renderScrollbar(props)}
+            {navigation && navigation.nextEl && renderNextButton && renderNextButton(props)}
+            {navigation && navigation.prevEl && renderPrevButton && renderPrevButton(props)}
+          </>
+        ) : null}
+      </ContainerEl>
+      {isOutRender ? (
+        <>
+          {pagination && pagination.el && renderPagination && renderPagination(props)}
+          {scrollbar && scrollbar.el && renderScrollbar && renderScrollbar(props)}
+          {navigation && navigation.nextEl && renderNextButton && renderNextButton(props)}
+          {navigation && navigation.prevEl && renderPrevButton && renderPrevButton(props)}
+        </>
+      ) : null}
+    </>
   );
 };
 
 // Default props
 ReactIdSwiper.defaultProps = {
+  isOutRender: false,
   containerClass: 'swiper-container',
   wrapperClass: 'swiper-wrapper',
   slideClass: 'swiper-slide',
